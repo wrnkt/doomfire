@@ -1,5 +1,8 @@
 import java.lang.Thread;
 
+import java.util.Arrays;
+import java.util.List;
+
 class DoomFire
 {
 
@@ -18,7 +21,7 @@ class DoomFire
             }
             catch(InterruptedException e)
             {
-                logType("ERROR", "Failed to print.");
+                log("ERROR", "Failed to print.");
             }
         }
     }
@@ -45,13 +48,19 @@ class DoomFire
         System.out.print("\033[H\033[2J");
     }
 
-    public static void logType(String type, String content)
+    public static void log(String type, String content)
     {
-        print(String.format(
-                    "[%s]: %s",
-                    type,
-                    content
-                    ));
+        List<String> validLogs = Arrays.asList("ERROR","INFO","LOG");
+
+        if(!validLogs.contains(type))
+        {
+            log("ERROR", String.format("log type %s not provided.", type));
+            return;
+        }
+        else
+        {
+            print(String.format("[%s] %s", type, content));
+        }
     }
 
     public static void print(String s)
@@ -68,6 +77,6 @@ class DoomFire
 
         // printLoop(500);
 
-        print(String.format("Length of colorMapOne: %d", colorMapOne.length()));
+        log("INFO", String.format("length of colorMapOne: %d", colorMapOne.length()));
     }
 }
