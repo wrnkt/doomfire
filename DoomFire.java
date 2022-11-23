@@ -6,10 +6,27 @@ import java.lang.Thread;
 
 class DoomFire
 {
-    static final int WIDTH = 200;
-    static final int HEIGHT = 160;
+    static final int WIDTH = 80;
+    static final int HEIGHT = 40;
 
     static final String colorMapOne = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+
+    public static void updateFire(int[] frameBuffer)
+    {
+        for (int x = 0; x < WIDTH; x++)
+        {
+            for (int y = 1; y < HEIGHT; y++)
+            {
+                spreadFire(frameBuffer, xyToBufferIndex(x, y));
+            }
+        }
+    }
+
+    public static void spreadFire(int[] frameBuffer, int srcIndex)
+    {
+        int destIndex = srcIndex = WIDTH;
+        frameBuffer[destIndex] = frameBuffer[srcIndex] - 1;
+    }
 
     public static int xyToBufferIndex(int x, int y)
     {
@@ -23,16 +40,17 @@ class DoomFire
         return bufferIndex;
     }
 
-    public static void printLoop(int msDelay)
+    public static void printLoop(int[] frameBuffer, String colorMap, int msDelay)
     {
 
         for(int i = 0; i < 100; i++)
         {
             try
             {
-                print(String.format("%d", i));
+                updateFire(frameBuffer);
+                printFrame(frameBuffer, colorMap);
                 Thread.sleep(msDelay);
-                clearScreen();
+                // clearScreen();
             }
             catch(InterruptedException e)
             {
@@ -46,9 +64,13 @@ class DoomFire
         clearScreen();
         for (int i = 0; i < frameBuffer.length; i++)
         {
+            // log("INFO", "the value of the framebuffer is: " + frameBuffer[i]);
             if (i % WIDTH == 0)
                 System.out.println();
-            System.out.print(colorMap.charAt(frameBuffer[i]));
+            if (frameBuffer[i] >= colorMap.length())
+                System.out.print(colorMap.charAt(colorMap.length() - 1));
+            else
+                System.out.print(colorMap.charAt(frameBuffer[i]));
         }
     }
 
@@ -56,6 +78,8 @@ class DoomFire
     {
         System.out.print("\033[H\033[2J");
     }
+
+    // LOGGING FUNCTIONS
 
     public static void log(String type, String content)
     {
@@ -77,6 +101,13 @@ class DoomFire
         System.out.println(s);
     }
         
+    public static void testFrameWithColorMap(int[] frameBuffer, String colorMap)
+    {
+        for (int i = 0; i < frameBuffer.length; i++)
+        {
+            frameBuffer[i] = i % colorMap.length();
+        }
+    }
     public static void main(String[] args)
     {
 
@@ -84,8 +115,11 @@ class DoomFire
         log("INFO", "content of colorMapOne: " + colorMapOne);
 
         int[] testFrame = new int[WIDTH*HEIGHT];
-        Arrays.fill(testFrame, 0);
+        // Arrays.fill(testFrame, 0);
+        testFrameWithColorMap(testFrame, colorMapOne);
 
-        printFrame(testFrame, colorMapOne);
+        log("INFO", "frame length: " + testFrame.length);
+        // printFrame(testFrame, colorMapOne);
+        printLoop(testFrame, colorMapOne, 100);
     }
 }
