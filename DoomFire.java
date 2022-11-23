@@ -1,12 +1,26 @@
-import java.lang.Thread;
-
 import java.util.Arrays;
 import java.util.List;
 
+import java.lang.Thread;
+
 class DoomFire
 {
+    static final int WIDTH = 200;
+    static final int HEIGHT = 180;
 
     static final String colorMapOne = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+
+    public static int xyToBufferIndex(int x, int y)
+    {
+        int bufferIndex;
+
+        if ((x < 0 || x > WIDTH) || (y < 0 || y > HEIGHT))
+            bufferIndex = -1;
+        else
+            bufferIndex = (y * WIDTH) + x;
+
+        return bufferIndex;
+    }
 
     public static void printLoop(int msDelay)
     {
@@ -27,19 +41,9 @@ class DoomFire
     }
 
     /*
-    public static void printFrame(int[] frameBuffer)
+    public static void printFrame(int[] frameBuffer, String colorMap)
     {
-        for(Cell[] row : board)
-        {
-            for(Cell c : row)
-            {
-                if(c.isAlive())
-                    System.out.print(aliveChar);
-                else
-                    System.out.print(deadChar);
-            }
-            System.out.print("\n");
-        }
+        clearScreen();
     }
     */
 
@@ -50,7 +54,7 @@ class DoomFire
 
     public static void log(String type, String content)
     {
-        List<String> validLogs = Arrays.asList("ERROR","INFO","LOG");
+        List<String> validLogs = Arrays.asList("ERROR","INFO","LOG", "TEST");
 
         if(!validLogs.contains(type))
         {
@@ -78,5 +82,6 @@ class DoomFire
         // printLoop(500);
 
         log("INFO", String.format("length of colorMapOne: %d", colorMapOne.length()));
+        log("INFO", "content of colorMapOne: " + colorMapOne);
     }
 }
