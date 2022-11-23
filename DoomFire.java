@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.lang.Thread;
@@ -6,7 +7,7 @@ import java.lang.Thread;
 class DoomFire
 {
     static final int WIDTH = 200;
-    static final int HEIGHT = 180;
+    static final int HEIGHT = 160;
 
     static final String colorMapOne = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
 
@@ -40,12 +41,16 @@ class DoomFire
         }
     }
 
-    /*
     public static void printFrame(int[] frameBuffer, String colorMap)
     {
         clearScreen();
+        for (int i = 0; i < frameBuffer.length; i++)
+        {
+            if (i % WIDTH == 0)
+                System.out.println();
+            System.out.print(colorMap.charAt(frameBuffer[i]));
+        }
     }
-    */
 
     public static void clearScreen()
     {
@@ -74,14 +79,13 @@ class DoomFire
         
     public static void main(String[] args)
     {
-        final int SCREEN_WIDTH = 150;
-        final int SCREEN_HEIGHT = 100;
-
-        // int[] screen = new int[SCREEN_WIDTH *];
-
-        // printLoop(500);
 
         log("INFO", String.format("length of colorMapOne: %d", colorMapOne.length()));
         log("INFO", "content of colorMapOne: " + colorMapOne);
+
+        int[] testFrame = new int[WIDTH*HEIGHT];
+        Arrays.fill(testFrame, 0);
+
+        printFrame(testFrame, colorMapOne);
     }
 }
