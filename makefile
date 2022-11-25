@@ -5,7 +5,7 @@ JFLAGS = -Wall
 
 CLASSDIR = classes
 
-default: Frame.class
+default: Frame.class FramePrinter.class
 
 rebuild:
 	make clean
@@ -17,8 +17,11 @@ DoomFire.class: DoomFire.java
 Frame.class: Frame.java
 	$(JC) $(JCFLAGS) -d $(CLASSDIR) Frame.java
 
+FramePrinter.class: FramePrinter.java Frame.class
+	$(JC) $(JCFLAGS) -d $(CLASSDIR) FramePrinter.java
+
 run:
-	java -cp $(CLASSDIR) Frame
+	java -cp $(CLASSDIR) FramePrinter
 
 clean:
 	$(RM) $(CLASSDIR)/*.class
