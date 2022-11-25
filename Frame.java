@@ -114,8 +114,7 @@ class Frame
         // log("INFO", "frameBuffer length = " + frameBuffer.length);
         // log("INFO", "colorMap length = " + colorMap.length());
 
-        System.out.println(this.toString());
-
+        System.out.println(this);
         System.out.println();
     }
 
