@@ -10,7 +10,6 @@ class DoomFire
     static final int HEIGHT = 30;
 
     static final String colorMapOne = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
-    static final String colorMapOneRev = new StringBuilder(colorMapOne).reverse().toString();
 
     /**
      * Iterates through indexes in frameBuffer and applies fire logic.
@@ -108,7 +107,6 @@ class DoomFire
             printLn(String.format("[%s] %s", type, content));
         }
     }
-
     public static void printLn(String s)
     {
         System.out.println(s);
