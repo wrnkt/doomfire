@@ -73,6 +73,14 @@ class Frame
         return frameBuffer.clone();
     }
 
+    public void fillWithColorMap()
+    {
+        for (int i = 0; i < this.frameBuffer.length; i++)
+        {
+            this.frameBuffer[i] = i % this.colorMap.length();
+        }
+    }
+
     public void printFrame()
     {
         clearScreen();
@@ -125,6 +133,8 @@ class Frame
     public static void main(String[] args)
     {
         Frame testFrame = new Frame("light");
+        testFrame.fillWithColorMap();
         testFrame.printFrame();
     }
+
 }
