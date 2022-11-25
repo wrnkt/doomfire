@@ -5,7 +5,7 @@ JFLAGS = -Wall
 
 CLASSDIR = classes
 
-default: DoomFire.class
+default: Frame.class
 
 rebuild:
 	make clean
@@ -14,11 +14,11 @@ rebuild:
 DoomFire.class: DoomFire.java
 	$(JC) $(JCFLAGS) -d $(CLASSDIR) DoomFire.java
 
-Cell.class: Cell.java
-	$(JC) $(JCFLAGS) -d $(CLASSDIR) Cell.java
+Frame.class: Frame.java
+	$(JC) $(JCFLAGS) -d $(CLASSDIR) Frame.java
 
 run:
-	java -cp $(CLASSDIR) DoomFire
+	java -cp $(CLASSDIR) Frame
 
 clean:
 	$(RM) $(CLASSDIR)/*.class
