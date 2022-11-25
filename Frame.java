@@ -38,19 +38,31 @@ class Frame
         // ex. "light, "dark", "light-bottomrow-dark", "dark-bottomrow-light", etc
         String[] tokens = frameConfig.split("-");
 
-        if(tokens[0].equals("dark"))
+        if (tokens[0].equals("dark"))
         {
-            Arrays.fill(this.frameBuffer, (this.colorMap.length() - 1));
+            setFrameBufferDark();
         }
         else if (tokens[0].equals("light"))
         {
-            Arrays.fill(this.frameBuffer, 0);
+            setFrameBufferLight();
         }
         else
         {
             log("ERROR",
                     String.format("unsupported specification \"%s\"", tokens[0]));
+            setFrameBufferDark();
+            log("LOG", "set default dark fill.");
         }
+    }
+
+    private void setFrameBufferDark()
+    {
+        Arrays.fill(this.frameBuffer, (this.colorMap.length() - 1));
+    }
+
+    private void setFrameBufferLight()
+    {
+        Arrays.fill(this.frameBuffer, 0);
     }
 
     private void setColorMap(String colorMap)
