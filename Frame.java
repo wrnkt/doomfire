@@ -31,39 +31,35 @@ class Frame
         this("dark");
     }
 
-    public Frame(String frameConfig)
+    public Frame(String frameConfig, String colorMap)
     {
-        setColorMap(DEFAULT_COLOR_MAP);
+        setColorMap(colorMap);
         // TODO: implement changing default frame setup
         // ex. "light, "dark", "light-bottomrow-dark", "dark-bottomrow-light", etc
         String[] tokens = frameConfig.split("-");
 
         if (tokens[0].equals("dark"))
         {
-            setFrameBufferDark();
+            fillDark();
         }
         else if (tokens[0].equals("light"))
         {
-            setFrameBufferLight();
+            fillLight();
         }
         else
         {
             log("ERROR",
                     String.format("unsupported specification \"%s\"", tokens[0]));
-            setFrameBufferDark();
+            fillDark();
             log("LOG", "set default dark fill.");
         }
     }
 
-    private void setFrameBufferDark()
+    public Frame(String frameConfig)
     {
-        Arrays.fill(this.frameBuffer, (this.colorMap.length() - 1));
+        this(frameConfig, DEFAULT_COLOR_MAP);
     }
 
-    private void setFrameBufferLight()
-    {
-        Arrays.fill(this.frameBuffer, 0);
-    }
 
     private void setColorMap(String colorMap)
     {
@@ -83,6 +79,16 @@ class Frame
     public int[] getFrameBuffer()
     {
         return frameBuffer.clone();
+    }
+
+    private void fillDark()
+    {
+        Arrays.fill(this.frameBuffer, (this.colorMap.length() - 1));
+    }
+
+    private void fillLight()
+    {
+        Arrays.fill(this.frameBuffer, 0);
     }
 
     public void fillWithColorMap()
