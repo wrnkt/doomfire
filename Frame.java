@@ -99,6 +99,14 @@ class Frame
         }
     }
 
+    public void fillBottomRow(int value)
+    {
+        for (int i = this.frameBuffer.length - WIDTH; i < this.frameBuffer.length; i++)
+        {
+            this.frameBuffer[i] = value;
+        }
+    }
+
     public void printFrame()
     {
         clearScreen();
