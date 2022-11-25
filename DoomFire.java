@@ -10,6 +10,7 @@ class DoomFire
     static final int HEIGHT = 30;
 
     static final String colorMapOne = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+    static final String colorMapOneRev = new StringBuilder(colorMapOne).reverse().toString();
 
     /**
      * Iterates through indexes in frameBuffer and applies fire logic.
@@ -30,8 +31,9 @@ class DoomFire
 
     public static void spreadFire(int[] frameBuffer, int srcIndex)
     {
-        int destIndex = srcIndex = WIDTH;
-        frameBuffer[destIndex] = frameBuffer[srcIndex] - 1;
+        int destIndex = srcIndex - WIDTH;
+        if (frameBuffer[destIndex] > 0) // set frameBuffer values' lower limit
+            frameBuffer[destIndex] = frameBuffer[srcIndex] - 1;
     }
 
     public static int xyToBufferIndex(int x, int y)
@@ -120,20 +122,32 @@ class DoomFire
         }
     }
 
+    public static void frameFillBottomRow(int[] frameBuffer, int width, int value)
+    {
+        // 0 1 2 3
+        // 4 5 6 7
+        // 8 9 10 11
+        for (int i = frameBuffer.length - width; i < frameBuffer.length; i++)
+        {
+            frameBuffer[i] = value;
+        }
+    }
+
     public static void main(String[] args)
     {
 
-        log("INFO", String.format("length of colorMapOne: %d", colorMapOne.length()));
-        log("INFO", "content of colorMapOne: " + colorMapOne);
-
         int[] testFrame = new int[WIDTH*HEIGHT];
-        // Arrays.fill(testFrame, 0);
-        testFrameWithColorMapFill(testFrame, colorMapOne);
-        printFrame(testFrame, colorMapOne);
-        printLn("");
 
+        // log("INFO", String.format("length of colorMapOne: %d", colorMapOne.length()));
+        // log("INFO", "content of colorMapOne: " + colorMapOne);
         // log("INFO", "frame length: " + testFrame.length);
+        
+        // testFrameWithColorMapFill(testFrame, colorMapOne);
+        // printFrame(testFrame, colorMapOne);
+        // printLn("");
 
-        // printLoop(testFrame, colorMapOne, 1);
+        Arrays.fill(testFrame, 0);
+        frameFillBottomRow(testFrame, WIDTH, 60);
+        printLoop(testFrame, colorMapOneRev, 300);
     }
 }
