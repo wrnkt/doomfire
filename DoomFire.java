@@ -6,16 +6,22 @@ import java.lang.Thread;
 
 class DoomFire
 {
-    static final int WIDTH = 80;
-    static final int HEIGHT = 40;
+    static final int WIDTH = 60;
+    static final int HEIGHT = 30;
 
     static final String colorMapOne = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
 
-    public static void updateFire(int[] frameBuffer)
+    /**
+     * Iterates through indexes in frameBuffer and applies fire logic.
+     * @param frameBuffer   An integer array representing darkness values of ASCII
+     *                      characters.
+     * @param width         The number of characters in a row of the screen. 
+     */
+    public static void updateFire(int[] frameBuffer, int width)
     {
-        for (int x = 0; x < WIDTH; x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int y = 1; y < HEIGHT; y++)
+            for (int y = 1; y < (frameBuffer.length / width); y++)
             {
                 spreadFire(frameBuffer, xyToBufferIndex(x, y));
             }
@@ -47,7 +53,7 @@ class DoomFire
         {
             try
             {
-                updateFire(frameBuffer);
+                updateFire(frameBuffer, WIDTH);
                 printFrame(frameBuffer, colorMap);
                 Thread.sleep(msDelay);
                 // clearScreen();
@@ -62,6 +68,10 @@ class DoomFire
     public static void printFrame(int[] frameBuffer, String colorMap)
     {
         clearScreen();
+
+        log("INFO", "frameBuffer length = " + frameBuffer.length);
+        log("INFO", "colorMap length = " + colorMap.length());
+
         for (int i = 0; i < frameBuffer.length; i++)
         {
             // log("INFO", "the value of the framebuffer is: " + frameBuffer[i]);
@@ -72,6 +82,7 @@ class DoomFire
             else
                 System.out.print(colorMap.charAt(frameBuffer[i]));
         }
+        System.out.println();
     }
 
     public static void clearScreen()
@@ -92,22 +103,23 @@ class DoomFire
         }
         else
         {
-            print(String.format("[%s] %s", type, content));
+            printLn(String.format("[%s] %s", type, content));
         }
     }
 
-    public static void print(String s)
+    public static void printLn(String s)
     {
         System.out.println(s);
     }
         
-    public static void testFrameWithColorMap(int[] frameBuffer, String colorMap)
+    public static void testFrameWithColorMapFill(int[] frameBuffer, String colorMap)
     {
         for (int i = 0; i < frameBuffer.length; i++)
         {
             frameBuffer[i] = i % colorMap.length();
         }
     }
+
     public static void main(String[] args)
     {
 
@@ -116,10 +128,12 @@ class DoomFire
 
         int[] testFrame = new int[WIDTH*HEIGHT];
         // Arrays.fill(testFrame, 0);
-        testFrameWithColorMap(testFrame, colorMapOne);
+        testFrameWithColorMapFill(testFrame, colorMapOne);
+        printFrame(testFrame, colorMapOne);
+        printLn("");
 
-        log("INFO", "frame length: " + testFrame.length);
-        // printFrame(testFrame, colorMapOne);
-        printLoop(testFrame, colorMapOne, 100);
+        // log("INFO", "frame length: " + testFrame.length);
+
+        // printLoop(testFrame, colorMapOne, 1);
     }
 }
