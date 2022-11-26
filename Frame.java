@@ -81,12 +81,12 @@ class Frame
         return frameBuffer.clone();
     }
 
-    private void fillDark()
+    public void fillDark()
     {
         Arrays.fill(this.frameBuffer, (this.colorMap.length() - 1));
     }
 
-    private void fillLight()
+    public void fillLight()
     {
         Arrays.fill(this.frameBuffer, 0);
     }
@@ -109,7 +109,7 @@ class Frame
 
     public void printFrame()
     {
-        clearScreen();
+        // clearScreen();
 
         // log("INFO", "frameBuffer length = " + frameBuffer.length);
         // log("INFO", "colorMap length = " + colorMap.length());
