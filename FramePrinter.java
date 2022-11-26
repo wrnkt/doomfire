@@ -5,7 +5,7 @@ import java.util.Arrays;
 class FramePrinter
 {
 
-    public static Frame nextFireFrame(Frame fSource)
+    public static Frame getNextFireFrame(Frame fSource)
     {
         int[] newFrameBuffer = new int[fSource.WIDTH * fSource.HEIGHT];
         newFrameBuffer = fSource.getFrameBuffer().clone();
@@ -14,17 +14,22 @@ class FramePrinter
         {
             for (int y = 1; y < fSource.HEIGHT; y++)
             {
-                int srcIndex = xyToBufferIndex(fSource, x, y);
-                int destIndex = srcIndex - fSource.WIDTH;
-
-                // set frameBuffer values' lower limit
-                if (fSource.getFrameBuffer()[destIndex] > 0) 
-                    newFrameBuffer[destIndex] = fSource.getFrameBuffer()[srcIndex] + 1;
+                spreadFire(fSource, newFrameBuffer, x, y);
             }
         }
 
         Frame newFrame = new Frame(newFrameBuffer, fSource.getColorMap());
         return newFrame;
+    }
+
+    public static void spreadFire(Frame fSource, int[] newFrameBuffer, int x, int y)
+    {
+        int srcIndex = xyToBufferIndex(fSource, x, y);
+        int destIndex = srcIndex - fSource.WIDTH;
+
+        // set frameBuffer values' lower limit
+        if (fSource.getFrameBuffer()[destIndex] > 0) 
+            newFrameBuffer[destIndex] = fSource.getFrameBuffer()[srcIndex] + 1;
     }
 
     public static int xyToBufferIndex(Frame f, int x, int y)
@@ -101,7 +106,7 @@ class FramePrinter
 
         for (int i = 0; i < 20; i++)
         {
-            Frame nextFrame = nextFireFrame(currentFrame);
+            Frame nextFrame = getNextFireFrame(currentFrame);
             fireTest.add(nextFrame);
             currentFrame = nextFrame;
         }
