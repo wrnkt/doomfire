@@ -5,22 +5,26 @@ import java.util.Arrays;
 class FramePrinter
 {
 
-    public static void updateFire(Frame f)
+    public static Frame nextFireFrame(Frame fSource)
     {
-        for (int x = 0; x < f.WIDTH; x++)
+        int[] newFrameBuffer = new int[fSource.WIDTH * fSource.HEIGHT];
+        newFrameBuffer = fSource.getFrameBuffer().clone();
+
+        for (int x = 0; x < fSource.WIDTH; x++)
         {
-            for (int y = 1; y < (f.getFrameBuffer().length / f.WIDTH); y++)
+            for (int y = 1; y < fSource.HEIGHT; y++)
             {
-                spreadFire(f, xyToBufferIndex(f, x, y));
+                int srcIndex = xyToBufferIndex(fSource, x, y);
+                int destIndex = srcIndex - fSource.WIDTH;
+
+                // set frameBuffer values' lower limit
+                if (fSource.getFrameBuffer()[destIndex] > 0) 
+                    newFrameBuffer[destIndex] = fSource.getFrameBuffer()[srcIndex] + 1;
             }
         }
-    }
 
-    public static void spreadFire(Frame f, int srcIndex)
-    {
-        int destIndex = srcIndex - f.WIDTH;
-        if (f.getFrameBuffer()[destIndex] > 0) // set frameBuffer values' lower limit
-          f.getFrameBuffer()[destIndex] = f.getFrameBuffer()[srcIndex] - 1;
+        Frame newFrame = new Frame(newFrameBuffer, fSource.getColorMap());
+        return newFrame;
     }
 
     public static int xyToBufferIndex(Frame f, int x, int y)
@@ -42,9 +46,8 @@ class FramePrinter
         {
             try
             {
+                clearScreen();
                 f.printFrame();
-                // updateFire(frameBuffer, WIDTH);
-                // printFrame(frameBuffer, colorMap);
                 Thread.sleep(msDelay);
                 // clearScreen();
             }
@@ -53,6 +56,11 @@ class FramePrinter
                 log("ERROR", "Failed to print.");
             }
         }
+    }
+
+    public static void clearScreen()
+    {
+        System.out.print("\033[H\033[2J");
     }
 
     public static void log(String type, String content)
@@ -83,7 +91,22 @@ class FramePrinter
         frameList1.add(new Frame("dark"));
         frameList1.add(new Frame("light"));
 
-        printLoop(frameList1, 300);
+        ArrayList<Frame> fireTest = new ArrayList<>();
+        Frame seedFrame = new Frame("dark");
+        seedFrame.fillBottomRow(0);
+        fireTest.add(seedFrame);
+        // System.out.println(seedFrame);
+
+        Frame currentFrame = seedFrame;
+
+        for (int i = 0; i < 20; i++)
+        {
+            Frame nextFrame = nextFireFrame(currentFrame);
+            fireTest.add(nextFrame);
+            currentFrame = nextFrame;
+        }
+
+        printLoop(fireTest, 500);
 
     }
 }
