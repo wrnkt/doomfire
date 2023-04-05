@@ -6,19 +6,16 @@ import java.lang.Thread;
 
 class DoomFire
 {
-    static final int WIDTH = 60;
-    static final int HEIGHT = 30;
-
     static final String colorMapOne = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+    static final int WIDTH = 60, HEIGHT = 30;
 
     /**
      * Iterates through indexes in frameBuffer and applies fire logic.
-     * @param frameBuffer   An integer array representing darkness values of ASCII
-     *                      characters.
+     * @param frameBuffer   An integer array representing the darkness of locations
+     *                      in a grid representing the screen.
      * @param width         The number of characters in a row of the screen. 
      */
-    public static void updateFire(int[] frameBuffer, int width)
-    {
+    public static void updateFire(int[] frameBuffer, int width) {
         for (int x = 0; x < width; x++)
         {
             for (int y = 1; y < (frameBuffer.length / width); y++)
@@ -40,7 +37,8 @@ class DoomFire
         int bufferIndex;
 
         if ((x < 0 || x > WIDTH) || (y < 0 || y > HEIGHT))
-            bufferIndex = -1;
+            // NOTE: Should probably throw IndexOutOfBoundsException instead of -1 return.
+            bufferIndex = -1; 
         else
             bufferIndex = (y * WIDTH) + x;
 
@@ -120,6 +118,13 @@ class DoomFire
         }
     }
 
+    /**
+     * Iterates through indexes in frameBuffer and applies fire logic.
+     * @param frameBuffer   An integer array representing the darkness of locations
+     *                      in a grid representing the screen.
+     * @param width         The number of characters in a row of the screen. 
+     * @param value         Brightness/darkness value to fill the bottom row with.
+     */
     public static void frameFillBottomRow(int[] frameBuffer, int width, int value)
     {
         // 0 1 2 3

@@ -141,7 +141,7 @@ class FramePrinter
             currentFrame = nextFrame;
         }
 
-        printLoop(fireTest, 200);
+        printLoop(fireTest, 50);
 
     }
 }
